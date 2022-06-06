@@ -1,7 +1,5 @@
 import java.util.Scanner;
 
-import javax.swing.JFrame;
-
 /**
  * Name:Farzad Hasan
  * Last Updated On: 6/2/22
@@ -19,7 +17,10 @@ import javax.swing.JFrame;
  */
 
 public class Battle {
-	
+	//variables used to control number of battles passed and current level/XP.
+	static int levelpoints;
+	static int level=1;
+	static int battleCount=0;
 	//This is the start battle method, basically what is used to play the game.
 	public static void startBattle(Player player, Monster monster, Scanner input) {
 		System.out.println(player.getName() +" has encountered a " + monster.getType() +"!");
@@ -59,6 +60,8 @@ public class Battle {
 					System.out.println("The " + monster.getType()+" is dead.");
 					System.out.println();
 					System.out.println(player.getName()+" has defeated the " + monster.getType());
+					
+	
 				}				
 			}
 			
@@ -97,7 +100,7 @@ public class Battle {
 			
 		}
 		if(player.getHealth()>0) {
-			int heal = (int) (Math.random()*20 + 1);
+			int heal = (int) (Math.random()*player.getHealth() + 1);
 			player.healDamage(heal);
 			System.out.println(player.getName()+ " has been rewarded with " + heal +" points of health back.");
 			//If the player wins whilst the monster has died, they are rewarded health points back. Additionally
@@ -105,8 +108,44 @@ public class Battle {
 			Item loot = getLoot(player);
 			player.receiveItem(loot);
 			System.out.println(player.getName()+" has been rewarded with a "+ loot +".");
+			int XP = giveXP(player);
 			
+			//Both the level and XP are updated in this code.
+			levelpoints+=XP;
+			level = getLevel(player, monster);
+			System.out.println(player.getName() + " has achieved "+ XP + " XP and is on level "+ level+ ".");
 		}
+	}
+	
+	//This method will determine what level a player is at depending on the XP they have.
+	
+	public static int getLevel(Player player, Monster monster) {
+		int l = 0;
+		if (levelpoints > 40) {
+			l = 5;
+		}
+		else if (levelpoints > 30) {
+			l = 4;
+		}
+		else if (levelpoints > 20) {
+			l = 3;
+		}
+		else if (levelpoints > 10) {
+			l = 2;
+		}
+		else {
+			l = 1;
+		}
+		player.setMaxDamage(l * 2);
+		monster.setMaxDamage(l * 3/2);
+		return l;
+	}
+	
+	//The giveXP value is rewarded to a player after they win a battle and it is between 1 and half the
+	//players maximum damage.
+	public static int giveXP(Player player) {
+		int XP = (int)(Math.random()*(player.getMaxDamage()/2) + 1);
+		return XP;
 	}
 	
 	public static Item getLoot(Player player) {
@@ -114,7 +153,7 @@ public class Battle {
 		//against other values which represent percent chances of the rarity being assigned to an item. For
 		//example, there is a 5% chance of getting an epic and a 10% chance of getting a greater item.
 		
-		double chance = Math.random();
+		double chance = (Math.random()) / level;
 		String rarity;
 		if(chance<=.05) {
 			rarity = "Epic";
@@ -147,25 +186,46 @@ public class Battle {
 			if(type<=.20) {
 				return new StrengthPotion(rarity);
 			}
+			else if(type <=.30) {
+				return new PoisionPotion(rarity);
+			}
 			else {
 				return new HealthPotion(rarity);
 			}
 		}
 	}
 	
+	public static void storyProgression(int battleCount, Monster monster) {
+		
+		//These are all the different prompts given to players after they have finished a certain battle.
+		if (battleCount == 1) {
+			System.out.println("Now that you have defeated the first " + monster.getType() +" in your path, you may continue the journey");
+			System.out.println("through the mountains to retrieve the power supply. Up ahead thunder is roaring, so you best find shelter.");
+			System.out.println("To assist you on your heroic journey, you have been gifted an item.");
+			System.out.println();
+			System.out.println("Rest up. Regain some health, the next day is a new step.");
+		}
+		if (battleCount == 2) {
+			System.out.println("While that " + monster.getType() + "was quite destructive, you've survived. Your villages reliance and faith in");
+			System.out.println("you has succeeded. But again, not everything is so simple. Rest and recharge. You are only 1 mile away from the");
+			System.out.println("site of the rock of creight.");
+		}
+		if (battleCount == 3) {
+			System.out.println("So many of these " + monster.getType()+ "??? You've survived thus far. Congragulations. Only a little bit further");
+			System.out.println("is the dungeon of the mega " + monster.getType() + ". Be careful and cautious. Defeating this boss" + monster.getType() + "will not only");
+			System.out.println("give back the power supply, but ensure peace and tranquility for eveyrone else in your town.");
+		}
+	}
+	
+	
 	//This is the main method used for testing and initial player settings.
 	
 	public static void main(String[] args) {
-		
-		//GUI Setup Begins Here
-		JFrame frame = new JFrame();
-		
-		
 		Scanner input = new Scanner(System.in);
 		System.out.print("What is your name? ");
 		String name = input.nextLine();
 		System.out.println();
-		System.out.print("Choose your class: Rogue, Warrior, or Mage. ");
+		System.out.print("Choose your class: Rogue, Warrior, Ninja, or Mage. ");
 		String type = input.next();
 		System.out.println();
 		String[] types = {"Shrek","Godzilla","massiveWompus"};
@@ -178,25 +238,50 @@ public class Battle {
 		else if(type.equals("Warrior")) {
 			player = new Warrior(name,0.3);
 		}
+		else if(type.equals("Ninja")) {
+			player = new Ninja(name, 0.3);
+		}
 		else{
 			player = new Mage(name,50);
 		}
 		//Using the above list of possible monsters, a random monster is generated.
 		int chance = (int)(Math.random()*2);
-		Monster monster = new Monster(types[chance]);
+		String type1 = types[chance];
+		Monster monster = new Monster(type1);
 		boolean replay = true;
+		
+		//This is the starting story for the player.
+		
+		System.out.println("For centuries, your town has relied on an energy source known as rock of creight.");
+		System.out.println("A few days ago, villagers heard thrashing and found that a monster had stolen the");
+		System.out.println("power supply from your people. The town council decided that you, " + player.getName() +
+				", are the best hope");
+		System.out.println("to save the town. You will now begin your journey to retrieve the stolen power supply");
+		System.out.println("in an effort to bring peace to your village.");
+		
 		//this is a global variable which keeps the game going until the user opts to end or they
 		//die.
 		while(replay && player.getHealth()>0) {
 			startBattle(player,monster,input);
 			//the code below will re-cast a new monster for the next game so things don't get boring :)
-			chance = (int) (Math.random()*2 + 0);
-			monster = new Monster(types[chance]);			
+			
+			//The different battles will correspond to how much maximum damage the monster can do.
+			monster = new Monster(type1, 100 + (battleCount * 10), battleCount, 10);			
 			
 			//this last statement checks to see if the player is dead. If so, they do not get a new item.
 			if(player.getHealth()>0) {
 				
 				//here the player is asked if they want to keep playing.
+				//the battles that have passed is incremented.
+				
+				battleCount++;
+				//ends the game
+				if (battleCount > 3) {
+					System.out.println("Congragulations. You have defeated the final boss. After a few hours of searching");
+					System.out.println("you have found the rock of creight. As you return to the village, streams of people");
+					System.out.println("await your return!");
+				}
+				else {
 				System.out.println("Do you want to keep playing? Type no to end. ");
 				String cont = input.next();
 				System.out.println();
@@ -204,9 +289,15 @@ public class Battle {
 					//again this is where the global boolean is assigned a value to continue/end the game loop.
 					replay = false;
 				}
+				//The progression method is called as it triggers the text blurb given to the user.
+				//Additionally, as the story progresses, the monster difficulty increases as a result of the player
+				//level and the number of battles that pass.
+				storyProgression(battleCount, monster);
+				}
 			}
 			else {
 				replay = false;
+				
 			}
 			
 		}

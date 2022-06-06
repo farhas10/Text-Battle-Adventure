@@ -12,6 +12,7 @@
 public class Monster {
 	private String type;
 	private int health;
+	private int maxHealth;
 	private int minDmg;
 	private int maxDmg;
 	//constructor for the Monster. 
@@ -21,6 +22,7 @@ public class Monster {
 		maxDmg = maxD;
 		type = typ;
 		health = hea;
+		maxHealth = hea;
 		if (health < 1) {
 			health = 100;
 		}
@@ -49,9 +51,13 @@ public class Monster {
 		return health;
 		//accessor method
 	}
+	
+	public int getMaxHealth() {
+		return maxHealth;
+	}
 	// allow monster to attack, and take damage
 	public int attack(Player p) {
-		int val = (int)(Math.random() * (maxDmg - minDmg+1)) + minDmg;
+		int val = (int)((Math.random() * (maxDmg - minDmg+1)) + minDmg);
 		p.takeDamage(val);
 		return val;
 	}
@@ -77,6 +83,10 @@ public class Monster {
 	//Method used for accessing the maximum damage.
 	public int getMaxDamage() {
 		return maxDmg;
+	}
+	
+	public void setMaxDamage(int d) {
+		maxDmg += d;
 	}
 }
 

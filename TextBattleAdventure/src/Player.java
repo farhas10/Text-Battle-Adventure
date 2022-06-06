@@ -79,7 +79,12 @@ public class Player {
 			Inventory = inv;
 		}
 	}
+	
+	public void setMaxDamage(int d) {
+		maxDmg += d;
+	}
 	//Accessor method to retrieve damage.
+	
 	public int getMaxDamage() {
 		return maxDmg;
 	}
