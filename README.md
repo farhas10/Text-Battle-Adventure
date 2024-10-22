@@ -25,11 +25,11 @@
 
 ## Project Structure
 
-- TextBattleAdventure/
-  ─ .classpath             
-  ─ .gitignore              
-  ─ .project        
-  ─ src/                
+- **TextBattleAdventure**
+  ─ **.classpath**             
+  ─ **.gitignore**              
+  ─ **.project**        
+  ─ **src/**                
     ─ Battle.java         
     ─ HealthPotion.java   
     ─ ManaPotion.java     
