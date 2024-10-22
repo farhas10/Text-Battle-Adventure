@@ -25,22 +25,24 @@
 
 ## Project Structure
 
-TextBattleAdventure/
-├── .gitignore              # To exclude unnecessary files
-├── README.md               # Project documentation
-├── src/                    # Contains all Java source files
-│   ├── Battle.java
-│   ├── HealthPotion.java
-│   ├── ManaPotion.java
-│   ├── PoisonPotion.java
-│   ├── StrengthPotion.java
-│   ├── Item.java
-│   ├── Player.java
-│   ├── Monster.java
-│   ├── Mage.java
-│   ├── Ninja.java
-│   ├── Rogue.java
-│   ├── Warrior.java
+- TextBattleAdventure/
+  ─ .classpath             
+  ─ .gitignore              
+  ─ .project        
+  ─ src/                
+    ─ Battle.java         
+    ─ HealthPotion.java   
+    ─ ManaPotion.java     
+    ─ PoisonPotion.java   
+    ─ StrengthPotion.java 
+    ─ Item.java          
+    ─ Player.java         
+    ─ Monster.java       
+    ─ Mage.java           
+    ─ Ninja.java          
+    ─ Rogue.java          
+    ─ Warrior.java       
+
 
 ## License
 
