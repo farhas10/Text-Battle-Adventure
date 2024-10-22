@@ -25,23 +25,22 @@
 
 ## Project Structure
 
-- TextBattleAdventure/
-  ─ .classpath              # IDE-specific project file for Eclipse
-  ─ .gitignore              # Files to be ignored by Git
-  ─ .project                # Eclipse project settings
-  ─ src/                    # Source code directory
-    ─ Battle.java         # Core battle mechanics
-    ─ HealthPotion.java   # Defines health potion functionality
-    ─ ManaPotion.java     # Defines mana potion functionality
-    ─ PoisonPotion.java   # Defines poison potion functionality
-    ─ StrengthPotion.java # Defines strength potion functionality
-    ─ Item.java           # Base class for all items
-    ─ Player.java         # Defines player properties and methods
-    ─ Monster.java        # Defines monster properties and methods
-    ─ Mage.java           # Mage class with unique abilities
-    ─ Ninja.java          # Ninja class with unique abilities
-    ─ Rogue.java          # Rogue class with unique abilities
-    ─ Warrior.java        # Warrior class with unique abilities
+TextBattleAdventure/
+├── .gitignore              # To exclude unnecessary files
+├── README.md               # Project documentation
+├── src/                    # Contains all Java source files
+│   ├── Battle.java
+│   ├── HealthPotion.java
+│   ├── ManaPotion.java
+│   ├── PoisonPotion.java
+│   ├── StrengthPotion.java
+│   ├── Item.java
+│   ├── Player.java
+│   ├── Monster.java
+│   ├── Mage.java
+│   ├── Ninja.java
+│   ├── Rogue.java
+│   ├── Warrior.java
 
 ## License
 
